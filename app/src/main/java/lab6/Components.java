@@ -3,6 +3,10 @@
  */
 package lab6;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 public class Components {
     public String getGreeting() {
         return "Hello World!";
@@ -10,5 +14,29 @@ public class Components {
 
     public static void main(String[] args) {
         System.out.println(new Components().getGreeting());
+    }
+
+    public static void printGraph(String input) throws FileNotFoundException {
+        File inputFile = new File(input);
+        Scanner read = new Scanner(inputFile); // open the file
+        int numLines = 0;
+
+        while (read.hasNextLine()) { // find how many lines in input.txt have more than one character (actually denote an edge)
+            if(read.nextLine().length() <= 1) {
+                read.nextLine();
+            }
+            else {
+            numLines++;
+            read.nextLine();
+            }
+        }
+
+        String[] strings = new String[numLines]; // create an array
+        for (int i = 0; i < numLines; i++) {
+            strings[i] = read.nextLine();
+            System.out.println(strings[i]);
+        }
+
+        read.close(); // close the file        
     }
 }
