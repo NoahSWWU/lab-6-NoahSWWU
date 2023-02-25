@@ -5,6 +5,7 @@ package lab6;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Components {
@@ -12,31 +13,54 @@ public class Components {
         return "Hello World!";
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         System.out.println(new Components().getGreeting());
+        String inputString = args[0];
+        new Components().printGraph(inputString);
     }
 
-    public static void printGraph(String input) throws FileNotFoundException {
+    public void printGraph(String input) throws FileNotFoundException {
         File inputFile = new File(input);
         Scanner read = new Scanner(inputFile); // open the file
-        int numLines = 0;
 
-        while (read.hasNextLine()) { // find how many lines in input.txt have more than one character (actually denote an edge)
-            if(read.nextLine().length() <= 1) {
-                read.nextLine();
-            }
-            else {
-            numLines++;
-            read.nextLine();
-            }
+        LinkedList<Integer> links = new LinkedList<Integer>(); // list for storing "edges"
+        LinkedList<Integer> numsChecking = new LinkedList<Integer>();
+        Boolean notDone = true;
+        String[] numbers = new String[2];
+        read.nextLine(); // get rid of first line, only has v
+        int firstNum;
+        int secondNum;
+        int chainCount = 0;
+
+        while (read.hasNextLine()) { // start filling first list with all numbers from file
+            numbers = read.nextLine().split(" ");
+            
+            links.add(Integer.parseInt(numbers[0]));
+            links.add(Integer.parseInt(numbers[1])); 
         }
 
-        String[] strings = new String[numLines]; // create an array
-        for (int i = 0; i < numLines; i++) {
-            strings[i] = read.nextLine();
-            System.out.println(strings[i]);
+        while (links.size() > 0) {
+            firstNum = links.pollFirst();
+
+            do {
+
+                while (links.contains(firstNum)) { // while the list still contains the first part of an edge
+                    numsChecking.add(links.get(links.indexOf(firstNum) + 1)); // add it to numsChecking
+                    links.remove(links.indexOf(firstNum) + 1); // remove the following node (second part of edge)
+                    links.removeFirstOccurrence(firstNum); // remove the node itself (first part of node)
+                }
+                
+                if (numsChecking.size() >= 1) {
+                    firstNum = numsChecking.pollFirst();
+                }
+            } while (numsChecking.size() > 0);
+
+            chainCount++;
         }
+
+        System.out.println(chainCount);
 
         read.close(); // close the file        
     }
 }
+
