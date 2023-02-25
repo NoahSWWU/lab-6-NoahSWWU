@@ -19,8 +19,8 @@ public class Components {
         new Components().printGraph(inputString);
     }
 
-    public void printGraph(String input) throws FileNotFoundException {
-        File inputFile = new File(input);
+    public void printGraph(String input) throws FileNotFoundException { // have an idea that could work. can't figure it out 
+        File inputFile = new File(input);                               // every day i think about how happy i would be if i just dropped out
         Scanner read = new Scanner(inputFile); // open the file
 
         LinkedList<Integer> links = new LinkedList<Integer>(); // list for storing "edges"
@@ -45,8 +45,8 @@ public class Components {
             do {
 
                 while (links.contains(firstNum)) { // while the list still contains the first part of an edge
-                    numsChecking.add(links.get(links.indexOf(firstNum) + 1)); // add it to numsChecking
-                    links.remove(links.indexOf(firstNum) + 1); // remove the following node (second part of edge)
+                    //numsChecking.add(links.get(links.indexOf(firstNum) + 1)); // add it to numsChecking
+                    //links.remove(links.indexOf(firstNum) + 1); // remove the following node (second part of edge)
                     links.removeFirstOccurrence(firstNum); // remove the node itself (first part of node)
                 }
                 
